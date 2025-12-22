@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emir Faruk Topal - Ubuntu</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Ubuntu+Mono&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <span style="margin-left: 10px;">Activities</span>
+        </div>
+        <div class="top-bar-center" id="clock">
+            Oct 28 12:00
+        </div>
+        <div class="top-bar-right">
+            <div class="top-bar-item" id="system-menu-trigger">
+                <span>TR</span> ▼ 🔋
+            </div>
+        </div>
+
+        <!-- System Menu Dropdown -->
+        <div class="system-menu" id="system-menu">
+            <div class="menu-item" id="restart-btn">Restart</div>
+            <div class="menu-item" id="power-off-btn">Power Off</div>
+        </div>
+    </div>
+
+    <!-- Boot/Shutdown Screen -->
+    <div id="power-screen" class="power-screen" style="display: none;">
+        <div class="ubuntu-logo">
+            <img src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo-32.png" alt="Ubuntu Logo" width="100">
+            <div class="spinner"></div>
+            <div class="ubuntu-text">ubuntu</div>
+        </div>
+    </div>
+
+    <!-- Dock -->
+    <div class="dock">
+        <div class="dock-icon active" title="Firefox">🦊</div>
+        <div class="dock-icon" title="Files">📁</div>
+        <div class="dock-icon" id="showcase-icon" title="My Showcase">🎨</div>
+        <div class="dock-icon" title="Software">🛍️</div>
+        <div class="dock-icon active" title="Terminal">💻</div>
+        <div class="dock-icon" title="Settings">⚙️</div>
+    </div>
+
+    <!-- Terminal Window -->
+    <div class="window" id="terminal-window">
+        <div class="window-header">
+            <span>emirft@ubuntu: ~</span>
+            <div class="window-controls">
+                <div class="control">_</div>
+                <div class="control">□</div>
+                <div class="control close">x</div>
+            </div>
+        </div>
+        <div class="window-content" id="terminal-content">
+            <div>
+                <span class="prompt">emirft@ubuntu</span>:<span class="path">~</span>$ neofetch
+            </div>
+            <br>
+            <div style="display: flex; gap: 20px;">
+                <div style="color: #E95420;">
+                    <pre>
+            .-.
+           (   )
+          /     \
+         .       .
+        .   o o   .
+        .  (   )  .
+         .  '-'  .
+          \     /
+           (   )
+            '-'
+                    </pre>
+                </div>
+                <div>
+                    <div><span style="color: #E95420;">emirft@ubuntu</span></div>
+                    <div>----------------</div>
+                    <div><span style="color: #E95420;">OS</span>: Ubuntu 22.04 LTS x86_64</div>
+                    <div><span style="color: #E95420;">Host</span>: Portfolio Website</div>
+                    <div><span style="color: #E95420;">Kernel</span>: 5.15.0-46-generic</div>
+                    <div><span style="color: #E95420;">Uptime</span>: 10 mins</div>
+                    <div><span style="color: #E95420;">Packages</span>: 1337 (dpkg)</div>
+                    <div><span style="color: #E95420;">Shell</span>: bash 5.1.16</div>
+                    <div><span style="color: #E95420;">Resolution</span>: 1920x1080</div>
+                    <div><span style="color: #E95420;">DE</span>: GNOME 42.2</div>
+                    <div><span style="color: #E95420;">WM</span>: Mutter</div>
+                    <div><span style="color: #E95420;">Theme</span>: Yaru-dark [GTK2/3]</div>
+                    <div><span style="color: #E95420;">Icons</span>: Yaru [GTK2/3]</div>
+                    <div><span style="color: #E95420;">Terminal</span>: gnome-terminal</div>
+                    <div><span style="color: #E95420;">CPU</span>: Simulated CPU</div>
+                    <div><span style="color: #E95420;">GPU</span>: WebGL Renderer</div>
+                    <div><span style="color: #E95420;">Memory</span>: 128MiB / 16384MiB</div>
+                </div>
+            </div>
+            <br>
+            <div id="current-line">
+                <span class="prompt">emirft@ubuntu</span>:<span class="path">~</span>$ <span
+                    id="input-text"></span><span class="cursor">_</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Desktop Icons -->
+    <div class="desktop-icons" style="position: absolute; top: 60px; left: 100px; z-index: 100; display: block;">
+        <div class="desktop-icon" id="showcase-desktop-icon"
+            style="display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; cursor: pointer;">
+            <div class="icon-image" style="font-size: 64px;">📂</div>
+            <div class="icon-label"
+                style="color: white; font-size: 14px; text-shadow: 2px 2px 4px black; font-weight: bold;">My Showcase
+            </div>
+        </div>
+    </div>
+
+    <!-- My Showcase Window -->
+    <div class="window" id="showcase-window"
+        style="display: none; top: 150px; left: 200px; width: 700px; height: 500px;">
+        <div class="window-header">
+            <span>My Showcase - Portfolio</span>
+            <div class="window-controls">
+                <div class="control">_</div>
+                <div class="control">□</div>
+                <div class="control close">x</div>
+            </div>
+        </div>
+        <div class="window-content" id="showcase-content"
+            style="background-color: #f5f5f5 !important; color: #333 !important; padding: 0 !important; font-family: 'Ubuntu', sans-serif !important; cursor: default !important;">
+            <div class="showcase-layout">
+                <div class="showcase-sidebar">
+                    <div class="showcase-header">
+                        <h1>Emir Faruk Topal</h1>
+                        <p class="subtitle">Linux System Administrator</p>
+                    </div>
+                    <nav class="showcase-nav">
+                        <a href="#" class="nav-item active" data-section="home">HOME</a>
+                        <a href="#" class="nav-item" data-section="about">ABOUT</a>
+                        <a href="#" class="nav-item" data-section="experience">EXPERIENCE</a>
+                        <a href="#" class="nav-item" data-section="projects">PROJECTS</a>
+                        <a href="#" class="nav-item" data-section="contact">CONTACT</a>
+                    </nav>
+                </div>
+
+                <div class="showcase-main">
+                    <!-- Home Section -->
+                    <div class="content-section active" id="home-section">
+                        <h1>Welcome 👋</h1>
+                        <h2>I'm Emir Faruk Topal</h2>
+                        <p>I'm a curious and dedicated Linux System Administrator. I thrive on exploring servers,
+                            automating workflows, and creating reliable infrastructure that just works.</p>
+
+                        <p>I graduated in June 2025 from Ahi Evran University with a BS in Computer Science. Technology
+                            fascinates me, and I'm always learning new tools and techniques to level up my skills.</p>
+
+                        <p>Here in my portfolio, you'll find my projects, experiments, and skills that reflect what I do
+                            best. Got a question or a cool idea? Don't hesitate to reach out – I love tech chats and
+                            collaboration.</p>
+
+                        <div class="resume-box">
+                            <h3>Want to check out my resume?</h3>
+                            <a href="https://drive.google.com/file/d/1-PN62ydLk_UwcUdL-m2sdEReHcmwG6s3/view?usp=sharing"
+                                target="_blank" class="resume-link">Click here to download it!</a>
+                        </div>
+                    </div>
+
+                    <!-- About Section -->
+                    <div class="content-section" id="about-section">
+                        <h1>About Me</h1>
+                        <p>From a young age, I have had a curiosity about how things worked. This naturally led me to
+                            become absolutely obsessed with Lego and I fell in love with building things.</p>
+                        <p>I love creating engaging, user-friendly applications that combine beautiful design with
+                            powerful functionality. This portfolio itself is an example of my work - a fully interactive
+                            3D environment running in your browser!</p>
+                        <p>When I'm not coding, you can find me exploring new technologies, contributing to open source,
+                            or working on creative side projects.</p>
+                    </div>
+
+                    <!-- Experience Section -->
+                    <div class="content-section" id="experience-section">
+                        <h1>Experience</h1>
+
+                        <div class="experience-item">
+                            <h2>Frontend Engineer</h2>
+                            <p class="company-link"><a href="#">www.example.com</a></p>
+                            <p class="date">Summer 2020 - Fall 2021</p>
+                            <ul>
+                                <li>Architected and engineered features for web applications with React and TypeScript
+                                </li>
+                                <li>Designed and implemented multiple features to increase app usability and user
+                                    experience</li>
+                                <li>Coordinated major refactors targeted towards app optimization and performance</li>
+                                <li>Directed and executed internal migrations to improve development workflow</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Projects Section -->
+                    <div class="content-section" id="projects-section">
+                        <h1>Projects</h1>
+                        <p class="section-intro">Click on one of the areas below to check out some of my favorite
+                            projects I've done in that field.</p>
+
+                        <div class="project-categories">
+                            <div class="category-card">
+                                <div class="category-icon">💻</div>
+                                <h2>Software</h2>
+                                <p>PROJECTS</p>
+                            </div>
+                            <div class="category-card">
+                                <div class="category-icon">🎵</div>
+                                <h2>Music</h2>
+                                <p>VENTURES</p>
+                            </div>
+                            <div class="category-card">
+                                <div class="category-icon">🎨</div>
+                                <h2>Art</h2>
+                                <p>ENDEAVORS</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Section -->
+                    <div class="content-section" id="contact-section">
+                        <h1>Get In Touch</h1>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <strong>📧 Email:</strong> <a
+                                    href="mailto:emirfaruktopal@example.com">emirfaruktopal@example.com</a>
+                            </div>
+                            <div class="contact-item">
+                                <strong>💼 LinkedIn:</strong> <a href="https://linkedin.com/in/emirfaruktopal"
+                                    target="_blank">linkedin.com/in/emirfaruktopal</a>
+                            </div>
+                            <div class="contact-item">
+                                <strong>🐙 GitHub:</strong> <a href="https://github.com/emirfaruktopal"
+                                    target="_blank">github.com/emirfaruktopal</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple Clock
+        function updateClock() {
+            const now = new Date();
+            const options = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+            document.getElementById('clock').innerText = now.toLocaleDateString('en-US', options).replace(',', '');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Mouse interaction for 3D scene (pass-through)
+        window.onload = () => {
+            addEventListener("mousemove", (e => { window.parent.postMessage({ clientX: e.clientX, clientY: e.clientY, type: "mousemove" }, "*") })),
+                addEventListener("mousedown", (e => { window.parent.postMessage({ type: "mousedown" }, "*") })),
+                addEventListener("mouseup", (e => { window.parent.postMessage({ type: "mouseup" }, "*") })),
+                addEventListener("keydown", (e => { window.parent.postMessage({ type: "keydown", key: e.key }, "*") })),
+                addEventListener("keyup", (e => { window.parent.postMessage({ type: "keyup", key: e.key }, "*") }))
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
