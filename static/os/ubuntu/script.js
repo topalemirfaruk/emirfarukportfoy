@@ -69,23 +69,55 @@ showcaseIcon.addEventListener('click', () => {
 showcaseDesktopIcon.addEventListener('dblclick', () => {
     showcaseWindow.style.display = 'flex';
     showcaseIcon.classList.add('active');
-    showcaseDesktopIcon.style.display = 'none'; // Hide icon when window opens
 });
 
 // Sidebar navigation
-document.querySelectorAll('.nav-item').forEach(navItem => {
-    navItem.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetSection = navItem.getAttribute('data-section');
-
+// Global app object for inline onclick handlers
+window.app = {
+    switchSection: function (sectionId) {
         // Remove active class from all nav items and sections
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
 
-        // Add active class to clicked nav item and corresponding section
-        navItem.classList.add('active');
-        document.getElementById(`${targetSection}-section`).classList.add('active');
+        // Add active class to target section
+        const targetSection = document.getElementById(`${sectionId}-section`);
+        if (targetSection) {
+            targetSection.classList.add('active');
+        }
+
+        // Add active class to corresponding nav item (if exists)
+        const navItem = document.querySelector(`.nav-item[data-section="${sectionId}"]`);
+        if (navItem) {
+            navItem.classList.add('active');
+        }
+
+        // Toggle sidebar visibility based on section
+        const showcaseContent = document.getElementById('showcase-content');
+        if (showcaseContent) {
+            if (sectionId === 'home') {
+                showcaseContent.classList.add('home-view');
+            } else {
+                showcaseContent.classList.remove('home-view');
+            }
+        }
+    }
+};
+
+// Sidebar navigation event listeners
+document.querySelectorAll('.nav-item').forEach(navItem => {
+    navItem.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetSection = navItem.getAttribute('data-section');
+        window.app.switchSection(targetSection);
     });
+});
+
+// Initialize home view state
+document.addEventListener('DOMContentLoaded', () => {
+    const showcaseContent = document.getElementById('showcase-content');
+    if (showcaseContent && document.getElementById('home-section').classList.contains('active')) {
+        showcaseContent.classList.add('home-view');
+    }
 });
 
 // My Showcase window controls
@@ -93,7 +125,6 @@ const showcaseControls = showcaseWindow.querySelectorAll('.control');
 showcaseControls[0].addEventListener('click', () => {
     showcaseWindow.style.display = 'none';
     showcaseIcon.classList.remove('active');
-    showcaseDesktopIcon.style.display = 'flex'; // Show icon when window closes
 });
 
 showcaseControls[1].addEventListener('click', () => {
@@ -411,3 +442,180 @@ window.addEventListener('message', (event) => {
     }
 });
 
+
+// --- Music Player Logic ---
+const musicPlayerIcon = document.getElementById('music-player-icon');
+const musicPlayerDesktopIcon = document.getElementById('music-player-desktop-icon');
+const musicPlayerWindow = document.getElementById('music-player-window');
+const playPauseBtn = document.getElementById('play-pause-btn');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const trackNameEl = document.getElementById('track-name');
+const artistNameEl = document.getElementById('artist-name');
+
+let isPlaying = false;
+let currentTrackIndex = 0;
+const tracks = [
+    { name: 'Lofi Beats', artist: 'Unknown Artist', file: 'radio1' },
+    { name: 'Synthwave', artist: 'Retro Vibes', file: 'radio2' },
+    { name: 'Jazz Vibes', artist: 'Smooth Jazz', file: 'radio3' },
+    { name: 'Tükeneceğiz', artist: 'Sezen Aksu', file: 'radio4' }
+];
+
+function updateTrackInfo() {
+    trackNameEl.innerText = tracks[currentTrackIndex].name;
+    artistNameEl.innerText = tracks[currentTrackIndex].artist;
+}
+
+function toggleMusicWindow() {
+    if (musicPlayerWindow.style.display === 'none') {
+        musicPlayerWindow.style.display = 'flex';
+        musicPlayerIcon.classList.add('active');
+    } else {
+        musicPlayerWindow.style.display = 'none';
+        musicPlayerIcon.classList.remove('active');
+    }
+}
+
+musicPlayerIcon.addEventListener('click', toggleMusicWindow);
+musicPlayerDesktopIcon.addEventListener('dblclick', toggleMusicWindow);
+
+// Window Controls for Music Player
+const musicPlayerControls = musicPlayerWindow.querySelectorAll('.control');
+
+// Minimize Button
+musicPlayerControls[0].addEventListener('click', () => {
+    musicPlayerWindow.style.display = 'none';
+    musicPlayerIcon.classList.remove('active');
+});
+
+// Maximize Button
+let isMusicPlayerMaximized = false;
+let musicPlayerOriginalDims = {};
+
+musicPlayerControls[1].addEventListener('click', () => {
+    if (!isMusicPlayerMaximized) {
+        musicPlayerOriginalDims = {
+            top: musicPlayerWindow.style.top,
+            left: musicPlayerWindow.style.left,
+            width: musicPlayerWindow.style.width,
+            height: musicPlayerWindow.style.height,
+            borderRadius: musicPlayerWindow.style.borderRadius
+        };
+
+        musicPlayerWindow.style.top = '27px';
+        musicPlayerWindow.style.left = '60px';
+        musicPlayerWindow.style.width = 'calc(100% - 60px)';
+        musicPlayerWindow.style.height = 'calc(100% - 27px)';
+        musicPlayerWindow.style.borderRadius = '0';
+        musicPlayerWindow.classList.add('maximized');
+        isMusicPlayerMaximized = true;
+    } else {
+        musicPlayerWindow.style.top = musicPlayerOriginalDims.top || '150px';
+        musicPlayerWindow.style.left = musicPlayerOriginalDims.left || '300px';
+        musicPlayerWindow.style.width = musicPlayerOriginalDims.width || '350px';
+        musicPlayerWindow.style.height = musicPlayerOriginalDims.height || '500px';
+        musicPlayerWindow.style.borderRadius = musicPlayerOriginalDims.borderRadius || '12px';
+        musicPlayerWindow.classList.remove('maximized');
+        isMusicPlayerMaximized = false;
+    }
+});
+
+// Close button for music player
+musicPlayerControls[2].addEventListener('click', () => {
+    musicPlayerWindow.style.display = 'none';
+    musicPlayerIcon.classList.remove('active');
+    // Optional: Stop music when closed?
+    // stopMusic();
+});
+
+// Controls
+playPauseBtn.addEventListener('click', () => {
+    if (isPlaying) {
+        pauseMusic();
+    } else {
+        playMusic();
+    }
+});
+
+nextBtn.addEventListener('click', () => {
+    currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+    playMusic();
+});
+
+prevBtn.addEventListener('click', () => {
+    currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+    playMusic();
+});
+
+function playMusic() {
+    isPlaying = true;
+    playPauseBtn.innerText = '⏸';
+    updateTrackInfo();
+
+    // Send message to parent
+    window.parent.postMessage({
+        type: 'audioControl',
+        action: 'play',
+        track: tracks[currentTrackIndex].file
+    }, '*');
+}
+
+function pauseMusic() {
+    isPlaying = false;
+    playPauseBtn.innerText = '▶';
+
+    // Send message to parent
+    window.parent.postMessage({
+        type: 'audioControl',
+        action: 'stop' // Using stop for now as pause might be complex with current setup
+    }, '*');
+}
+
+function stopMusic() {
+    isPlaying = false;
+    playPauseBtn.innerText = '▶';
+    window.parent.postMessage({
+        type: 'audioControl',
+        action: 'stop'
+    }, '*');
+}
+
+// Resize Logic
+const resizeHandle = musicPlayerWindow.querySelector('.resize-handle');
+
+resizeHandle.addEventListener('pointerdown', initResize);
+
+function initResize(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    resizeHandle.setPointerCapture(e.pointerId);
+
+    resizeHandle.addEventListener('pointermove', resize);
+    resizeHandle.addEventListener('pointerup', stopResize);
+    resizeHandle.addEventListener('pointercancel', stopResize);
+}
+
+function resize(e) {
+    const rect = musicPlayerWindow.getBoundingClientRect();
+    // Calculate new width and height based on pointer position relative to window top-left
+
+    const newWidth = e.clientX - rect.left;
+    const newHeight = e.clientY - rect.top;
+
+    // Minimum dimensions
+    if (newWidth > 300) {
+        musicPlayerWindow.style.width = newWidth + 'px';
+    }
+    if (newHeight > 400) {
+        musicPlayerWindow.style.height = newHeight + 'px';
+    }
+}
+
+function stopResize(e) {
+    resizeHandle.releasePointerCapture(e.pointerId);
+    resizeHandle.removeEventListener('pointermove', resize);
+    resizeHandle.removeEventListener('pointerup', stopResize);
+    resizeHandle.removeEventListener('pointercancel', stopResize);
+}

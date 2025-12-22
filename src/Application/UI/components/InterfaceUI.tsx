@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import UIEventBus from '../EventBus';
 import InfoOverlay from './InfoOverlay';
 
-interface InterfaceUIProps {}
+interface InterfaceUIProps { }
 
-const InterfaceUI: React.FC<InterfaceUIProps> = ({}) => {
+const InterfaceUI: React.FC<InterfaceUIProps> = ({ }) => {
     const [initLoad, setInitLoad] = useState(true);
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(true);

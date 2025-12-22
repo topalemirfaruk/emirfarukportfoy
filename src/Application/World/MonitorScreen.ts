@@ -33,6 +33,7 @@ export default class MonitorScreen extends EventEmitter {
     mouseClickInProgress: boolean;
     dimmingPlane: THREE.Mesh;
     videoTextures: { [key in string]: THREE.VideoTexture };
+    currentRadioKey: string | null = null;
 
     constructor() {
         super();
@@ -175,6 +176,43 @@ export default class MonitorScreen extends EventEmitter {
                     } else if (event.data.type === 'keyup') {
                         // @ts-ignore
                         evt.key = event.data.key;
+                    } else if (event.data.type === 'audioControl') {
+                        const { action, track } = event.data;
+                        const audioManager = this.application.world.audioManager;
+
+                        // We need to keep track of the playing audio to stop/pause it
+                        // This is a simple implementation, assuming one track at a time for the radio
+                        if (action === 'play') {
+                            // Stop any existing radio tracks first (optional, but good for single channel)
+                            // For now, we just play. Ideally we'd track the pool key.
+                            // Let's store the current radio key on the class instance if needed, 
+                            // but for now let's just fire and forget or use a specific method if we want more control.
+                            // Actually, to support stop/pause, we need to store the key.
+
+                            if (this.currentRadioKey && audioManager.audioPool[this.currentRadioKey]) {
+                                audioManager.audioPool[this.currentRadioKey].stop();
+                            }
+
+                            this.currentRadioKey = audioManager.playAudio(track, {
+                                volume: 0.5,
+                                loop: false,
+                            });
+
+                            // Handle track end to notify UI? 
+                            // For now, let's just play.
+                            if (audioManager.audioPool[this.currentRadioKey]) {
+                                // @ts-ignore
+                                audioManager.audioPool[this.currentRadioKey].source.onended = () => {
+                                    // Optional: send message back to iframe that track ended
+                                }
+                            }
+
+                        } else if (action === 'stop') {
+                            if (this.currentRadioKey && audioManager.audioPool[this.currentRadioKey]) {
+                                audioManager.audioPool[this.currentRadioKey].stop();
+                                this.currentRadioKey = null;
+                            }
+                        }
                     }
 
                     iframe.dispatchEvent(evt);
