@@ -1,29 +1,51 @@
-# henryheffernan.com
+# Emir Faruk Topal - 3D Portfolio
 
-This is one of two repositories created for my portfolio website <a href="https://henryheffernan.com/"><samp>henryheffernan.com</samp></a>. If you are looking for the 2D OS repository you can find it <a href="https://github.com/henryjeff/portfolio-inner-site"><samp>here</samp></a>! Thanks for taking the time to check this out. If you have any questions of comments, feel free to shoot me an email at <samp><a href="mailto:henryheffernan@gmail.com">henryheffernan@gmail.com</a></samp> or you can DM me on twitter <a href="https://twitter.com/henryheffernan"><samp>@henryheffernan</samp></a>.
+Welcome to the source code of my personal 3D portfolio website! This project features an interactive 3D desk setup with a simulated Ubuntu OS environment, built using **Three.js** and **React**.
 
-<br>
+## 🌟 Features
 
-To setup a dev environment:
+*   **Interactive 3D Environment:** A fully navigable 3D desk setup.
+*   **Simulated OS:** A functional Ubuntu-like interface running within the 3D monitor.
+*   **Linux Penguin (Tux):** A custom 3D model of Tux added to the desk setup.
+*   **Music Player:** Integrated music player featuring "Sezen Aksu - Tükeneceğiz" and other tracks.
+*   **Custom BIOS Loading Screen:** Unique boot sequence with "EFTBIOS" and 2025 release date.
+
+## 🚀 Getting Started
+
+To set up the development environment on your local machine:
 
 ```bash
 # Clone the repository
+git clone https://github.com/topalemirfaruk/emirfarukportfoy.git
+
+# Navigate to the project directory
+cd emirfarukportfoy
 
 # Install dependencies 
-npm i
+npm install
 
-# Run the local dev server
+# Run the local development server
 npm run dev
 ```
 
-To serve a production build:
+## 📦 Building for Production
+
+To create a production-ready build:
 
 ```bash
-# Install dependencies if not already done - 'npi i'
-
-# Build for production
+# Build the project
 npm run build
 
-# Serve the build using express
+# Serve the production build
 npm start
 ```
+
+## 🛠️ Technologies Used
+
+*   **Three.js:** For 3D graphics and rendering.
+*   **React:** For UI components and application logic.
+*   **TypeScript:** For type-safe code.
+*   **Webpack:** For bundling and asset management.
+
+---
+*Emir Faruk Topal Portfolio Showcase 2025*
