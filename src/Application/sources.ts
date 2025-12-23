@@ -114,6 +114,11 @@ const sources: Resource[] = [
         type: 'audio',
         path: 'audio/radio/4.mp3',
     },
+    {
+        name: 'penguinModel',
+        type: 'gltfModel',
+        path: 'models/penguin.glb',
+    },
 ];
 
 export default sources;

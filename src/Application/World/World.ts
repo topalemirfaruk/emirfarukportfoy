@@ -8,6 +8,7 @@ import CoffeeSteam from './CoffeeSteam';
 import Cursor from './Cursor';
 import Hitboxes from './Hitboxes';
 import AudioManager from '../Audio/AudioManager';
+import Penguin from './Penguin';
 export default class World {
     application: Application;
     scene: THREE.Scene;
@@ -22,6 +23,7 @@ export default class World {
     cursor: Cursor;
     audioManager: AudioManager;
     hitboxes: Hitboxes;
+    penguin: Penguin;
 
     constructor() {
         this.application = new Application();
@@ -37,6 +39,7 @@ export default class World {
             this.coffeeSteam = new CoffeeSteam();
             this.audioManager = new AudioManager();
             this.hitboxes = new Hitboxes();
+            this.penguin = new Penguin();
             // this.cursor = new Cursor();
         });
     }

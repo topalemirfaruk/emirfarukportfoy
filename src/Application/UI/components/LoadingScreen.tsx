@@ -107,7 +107,7 @@ const LoadingScreen: React.FC<LoadingProps> = () => {
         // add leading zero
         const monthFormatted = month < 10 ? `0${month}` : month;
         const dayFormatted = day < 10 ? `0${day}` : day;
-        return `${monthFormatted}/${dayFormatted}/${year}`;
+        return `${dayFormatted}/${monthFormatted}/${year}`;
     };
 
     const detectWebGLContext = () => {
@@ -157,8 +157,8 @@ const LoadingScreen: React.FC<LoadingProps> = () => {
                             </div>
                         </div>
                         <div style={styles.headerInfo}>
-                            <p>Released: 01/13/2000</p>
-                            <p>EFTBIOS (C)2000 Emir Faruk Topal Inc.,</p>
+                            <p>Released: 16/04/2005</p>
+                            <p>EFTBIOS (C)2005 Emir Faruk Topal Inc.,</p>
                         </div>
                     </div>
                     <div style={styles.body} className="loading-screen-body">
@@ -227,7 +227,7 @@ const LoadingScreen: React.FC<LoadingProps> = () => {
                     <p>But do enjoy what I have done so far :)</p>
                     <div style={styles.spacer} />
                     <div style={styles.spacer} /> */}
-                    <p>Emir Faruk Topal Portfolio Showcase 2022</p>
+                    <p>Emir Faruk Topal Portfolio Showcase 2025</p>
                     {mobileWarning && (
                         <>
                             <br />
