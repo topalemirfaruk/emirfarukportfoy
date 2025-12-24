@@ -619,3 +619,69 @@ function stopResize(e) {
     resizeHandle.removeEventListener('pointerup', stopResize);
     resizeHandle.removeEventListener('pointercancel', stopResize);
 }
+
+// --- Doom Logic ---
+const doomIcon = document.getElementById('doom-icon');
+const doomWindow = document.getElementById('doom-window');
+
+function toggleDoomWindow() {
+    if (doomWindow.style.display === 'none') {
+        doomWindow.style.display = 'flex';
+        doomIcon.classList.add('active');
+    } else {
+        doomWindow.style.display = 'none';
+        doomIcon.classList.remove('active');
+    }
+}
+
+doomIcon.addEventListener('click', toggleDoomWindow);
+
+// Doom Window Controls
+const doomControls = doomWindow.querySelectorAll('.control');
+
+// Minimize
+doomControls[0].addEventListener('click', () => {
+    doomWindow.style.display = 'none';
+    doomIcon.classList.remove('active');
+});
+
+// Maximize
+let isDoomMaximized = false;
+let doomOriginalDims = {};
+
+doomControls[1].addEventListener('click', () => {
+    if (!isDoomMaximized) {
+        doomOriginalDims = {
+            top: doomWindow.style.top,
+            left: doomWindow.style.left,
+            width: doomWindow.style.width,
+            height: doomWindow.style.height,
+            borderRadius: doomWindow.style.borderRadius
+        };
+
+        doomWindow.style.top = '27px';
+        doomWindow.style.left = '60px';
+        doomWindow.style.width = 'calc(100% - 60px)';
+        doomWindow.style.height = 'calc(100% - 27px)';
+        doomWindow.style.borderRadius = '0';
+        doomWindow.classList.add('maximized');
+        isDoomMaximized = true;
+    } else {
+        doomWindow.style.top = doomOriginalDims.top || '100px';
+        doomWindow.style.left = doomOriginalDims.left || '150px';
+        doomWindow.style.width = doomOriginalDims.width || '800px';
+        doomWindow.style.height = doomOriginalDims.height || '600px';
+        doomWindow.style.borderRadius = doomOriginalDims.borderRadius || '8px 8px 0 0';
+        doomWindow.classList.remove('maximized');
+        isDoomMaximized = false;
+    }
+});
+
+// Close
+doomControls[2].addEventListener('click', () => {
+    doomWindow.style.display = 'none';
+    doomIcon.classList.remove('active');
+    // Reload iframe to stop game sound/process
+    const iframe = doomWindow.querySelector('iframe');
+    iframe.src = iframe.src;
+});
