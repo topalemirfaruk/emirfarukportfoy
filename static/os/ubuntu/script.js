@@ -622,6 +622,7 @@ function stopResize(e) {
 
 // --- Doom Logic ---
 const doomIcon = document.getElementById('doom-icon');
+const doomDesktopIcon = document.getElementById('doom-desktop-icon');
 const doomWindow = document.getElementById('doom-window');
 
 function toggleDoomWindow() {
@@ -635,6 +636,9 @@ function toggleDoomWindow() {
 }
 
 doomIcon.addEventListener('click', toggleDoomWindow);
+if (doomDesktopIcon) {
+    doomDesktopIcon.addEventListener('dblclick', toggleDoomWindow);
+}
 
 // Doom Window Controls
 const doomControls = doomWindow.querySelectorAll('.control');
