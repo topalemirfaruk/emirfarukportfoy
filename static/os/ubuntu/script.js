@@ -624,14 +624,31 @@ function stopResize(e) {
 const doomIcon = document.getElementById('doom-icon');
 const doomDesktopIcon = document.getElementById('doom-desktop-icon');
 const doomWindow = document.getElementById('doom-window');
+let dosInstance = null;
 
 function toggleDoomWindow() {
     if (doomWindow.style.display === 'none') {
         doomWindow.style.display = 'flex';
         doomIcon.classList.add('active');
+
+        // Initialize Doom if not already running
+        if (!dosInstance) {
+            Dos(document.getElementById("doom-canvas"), {
+                wdosboxUrl: "https://js-dos.com/6.22/current/wdosbox.js",
+                cycles: 1000,
+                autolock: false,
+            }).ready((fs, main) => {
+                fs.extract("https://js-dos.com/6.22/current/test/doom.zip").then(() => {
+                    main(["-c", "doom"]).then((ci) => {
+                        dosInstance = ci;
+                    });
+                });
+            });
+        }
     } else {
         doomWindow.style.display = 'none';
         doomIcon.classList.remove('active');
+        // Optional: Pause or stop logic could go here
     }
 }
 
@@ -673,8 +690,8 @@ doomControls[1].addEventListener('click', () => {
     } else {
         doomWindow.style.top = doomOriginalDims.top || '100px';
         doomWindow.style.left = doomOriginalDims.left || '150px';
-        doomWindow.style.width = doomOriginalDims.width || '800px';
-        doomWindow.style.height = doomOriginalDims.height || '600px';
+        doomWindow.style.width = doomOriginalDims.width || '640px';
+        doomWindow.style.height = doomOriginalDims.height || '400px';
         doomWindow.style.borderRadius = doomOriginalDims.borderRadius || '8px 8px 0 0';
         doomWindow.classList.remove('maximized');
         isDoomMaximized = false;
@@ -685,7 +702,11 @@ doomControls[1].addEventListener('click', () => {
 doomControls[2].addEventListener('click', () => {
     doomWindow.style.display = 'none';
     doomIcon.classList.remove('active');
-    // Reload iframe to stop game sound/process
-    const iframe = doomWindow.querySelector('iframe');
-    iframe.src = iframe.src;
+
+    // Stop the game
+    if (dosInstance) {
+        dosInstance.exit();
+        dosInstance = null;
+        document.getElementById("doom-canvas").innerHTML = ""; // Clear canvas
+    }
 });
