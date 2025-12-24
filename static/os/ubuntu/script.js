@@ -699,14 +699,29 @@ doomControls[1].addEventListener('click', () => {
 });
 
 // Close
+// Close
 doomControls[2].addEventListener('click', () => {
     doomWindow.style.display = 'none';
     doomIcon.classList.remove('active');
 
-    // Stop the game
-    if (dosInstance) {
-        dosInstance.exit();
-        dosInstance = null;
-        document.getElementById("doom-canvas").innerHTML = ""; // Clear canvas
+    // Reload iframe to completely stop the game and sound
+    const iframe = doomWindow.querySelector('iframe');
+    if (iframe) {
+        const currentSrc = iframe.src;
+        iframe.src = ''; // Clear src first
+        setTimeout(() => {
+            iframe.src = currentSrc; // Restore src (resets the game)
+        }, 100);
+    }
+});
+
+// Update Music Player Close Logic
+// Note: We need to find the existing listener or just add a new one that handles the stop logic.
+// Since we can't easily replace an anonymous function listener without knowing its exact position,
+// let's add a specific listener for the close button that stops music.
+// The existing listener just hides the window.
+musicPlayerControls[2].addEventListener('click', () => {
+    if (isPlaying) {
+        pauseMusic();
     }
 });
